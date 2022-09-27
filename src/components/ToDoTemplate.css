@@ -1,0 +1,25 @@
+.ToDoTemplate {
+    width: 512px;
+    margin: 6rem auto 0 auto;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.app-title {
+    background: #1D3A58;
+    padding: 2rem 1rem;
+    color: white;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.app-date {
+    background: #1D3A58;
+    text-align: right;
+    padding: 0 1rem 1rem 0;
+    color: white;
+}
+
+.content {
+    background: white;
+}
