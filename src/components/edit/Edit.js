@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import './ToDoEdit.css';
+import {EditBackground, EditForm } from './Edit.styled.js';
 
-function ToDoEdit({ onUpdate, selectedToDo }) {
+const Edit = ({ onUpdate, selectedToDo })  => {
     
     const [value, setValue] = useState('');
     
@@ -23,19 +23,20 @@ function ToDoEdit({ onUpdate, selectedToDo }) {
         }
         
     }, [selectedToDo]);
+    
     return (
-        <div className="background">
-            <form className="ToDoEdit_insert" onSubmit={onSubmit}>
+        <EditBackground>
+          <EditForm onSubmit={onSubmit}>
                 <h2> 수정하기 </h2>
                 <input
                     value={value}
                     onChange={onChange}
                     placeholder='할일을 수정하세요' />
                 <button type="submit">수정하기</button>
-            </form>
-        </div>
+            </EditForm>
+        </EditBackground>
     )
 }
 
 
-export default ToDoEdit;
+export default Edit;
