@@ -12,24 +12,7 @@ import Edit from "../edit/Edit.js";
 import List from "../list/List.js";
 
 const Template = ({ children }) => {
-  const date = new Date();
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "리액트 기초 알아보기",
-      checked: true,
-    },
-    {
-      id: 2,
-      text: "컴포넌트 스타일링 하기",
-      checked: true,
-    },
-    {
-      id: 3,
-      text: "투두리스트 만들기",
-      checked: false,
-    },
-  ]);
+  const [tasks, setTasks] = useLocalStorage("tasks", []);
   const [selectedToDo, setSelectedToDo] = useState(null);
   //선택되는 todo
   const [insertToggle, setInsertToggle] = useState(false);
@@ -37,19 +20,10 @@ const Template = ({ children }) => {
 
   const nextId = useRef(4);
 
-  // const onInsert = useCallback((text) => {
-  //     const todo = { // {id, text, checked}
-  //         id: nextId.current,
-  //         text,
-  //         checked: false
-  //     };
-  //     setTasks((tasks) => tasks.concat(todo)); //주어진 배열의 기존 값에 합져져 새 배열 반환
-  //     nextId.current++;
-  // }, [tasks],);
-  //tasks 가 바뀔때마다 todo가 새롭게 만들어지고 tasks에 추가됨
   const onInsert = (task) => {
-    setTasks((prev) => [...prev, task]);
+    setTasks((prevState) => [...prevState, task]);
   };
+
   const onToggle = useCallback((id) => {
     setTasks((tasks) =>
       tasks.map((todo) =>
@@ -98,14 +72,16 @@ const Template = ({ children }) => {
 
       <Insert onInsert={onInsert} />
 
-      {tasks && <List
-        tasks={tasks}
-        onToggle={onToggle}
-        onRemove={onRemove}
-        onInsertToggle={onInsertToggle}
-        onChangeSelectedToDo={onChangeSelectedToDo}
-      />}
-      
+      {tasks && (
+        <List
+          tasks={tasks}
+          onToggle={onToggle}
+          onRemove={onRemove}
+          onInsertToggle={onInsertToggle}
+          onChangeSelectedToDo={onChangeSelectedToDo}
+        />
+      )}
+
       {insertToggle && (
         <Edit
           onInsert={onInsert}

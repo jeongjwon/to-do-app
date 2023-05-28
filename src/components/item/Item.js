@@ -4,8 +4,10 @@ import {
   MdCheckBox,
   MdModeEditOutline,
 } from "react-icons/md";
+import { HiOutlineTrash, HiOutlinePencilAlt } from "react-icons/hi";
+
 import cn from "classnames";
-import {ItemContainer, ItemWrapper} from "./Item.styled";
+import { ItemContainer, ItemWrapper } from "./Item.styled";
 
 const Item = ({
   task,
@@ -14,7 +16,8 @@ const Item = ({
   onChangeSelectedToDo,
   onInsertToggle,
 }) => {
-  const { id, text, checked } = task;
+  const { name, checked, id, date } = task;
+
   return (
     <ItemWrapper>
       <ItemContainer>
@@ -26,19 +29,24 @@ const Item = ({
         >
           {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
 
-          <div className="text">{text}</div>
+          <div className="text">{name}</div>
         </div>
-        <div
-          className="edit"
-          onClick={() => {
-            onChangeSelectedToDo(task);
-            onInsertToggle();
-          }}
-        >
-          <MdModeEditOutline />
-        </div>
-        <div className="remove" onClick={() => onRemove(id)}>
-          <MdRemoveCircleOutline />
+      </ItemContainer>
+      <ItemContainer>
+        <div className="date">{date} </div>
+        <div className="button">
+          <div
+            className="edit"
+            onClick={() => {
+              onChangeSelectedToDo(task);
+              onInsertToggle();
+            }}
+          >
+            <HiOutlinePencilAlt />
+          </div>
+          <div className="remove" onClick={() => onRemove(id)}>
+            <HiOutlineTrash />
+          </div>
         </div>
       </ItemContainer>
     </ItemWrapper>

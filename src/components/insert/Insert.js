@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { MdAdd } from "react-icons/md";
-import { InsertForm, FormWrapper } from "./Insert.styled.js";
+import { InsertForm, FormWrapper, PlusBtn } from "./Insert.styled.js";
 
 const Insert = ({ onInsert }) => {
   const [value, setValue] = useState("");
@@ -8,6 +8,7 @@ const Insert = ({ onInsert }) => {
   const onChange = useCallback((e) => {
     setValue(e.target.value);
   }, []);
+  const today = new Date();
 
   const hanldeSumbit = useCallback(
     (e) => {
@@ -16,8 +17,9 @@ const Insert = ({ onInsert }) => {
         name: value,
         checked: false,
         id: Date.now(),
+        date: today.toLocaleDateString(),
       });
-      setValue('');
+      setValue("");
     },
     [onInsert, value]
   );
@@ -28,13 +30,16 @@ const Insert = ({ onInsert }) => {
         <input
           value={value}
           onChange={onChange}
-          placeholder="Type to add a note..."
+          placeholder="Enter TODO"
+          required
         />
-        {/* <label htmlFor="task" className="label">Enter to do </label> */}
-        <button type="submit">
-          <MdAdd />
-        </button>
+        {/* <label htmlFor="task" className="label">
+          ENTER to do...
+        </label> */}
       </FormWrapper>
+      <PlusBtn type="submit">
+        <MdAdd />
+      </PlusBtn>
     </InsertForm>
   );
 };

@@ -5,7 +5,8 @@ import {ListContainer} from './List.styled.js';
 const  List = ({tasks, onRemove, onToggle, onChangeSelectedToDo, onInsertToggle}) => {
     return (
         <ListContainer>
-            {tasks.map((task) => (
+            {tasks.sort((a,b) => a.id - b.id)
+                .map((task) => (
                 <Item
                     task={task}
                     key={task.id}
