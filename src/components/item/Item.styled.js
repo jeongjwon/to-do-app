@@ -9,9 +9,9 @@ export const ItemWrapper = styled.div`
   background-color: #63a1d1;
   padding: 1rem 1rem;
   margin-bottom: 0.5rem;
-  :nth-child(2) {
+  /* :nth-child(2) {
     background-color: #ebf0f4;
-  }
+  } */
 `;
 export const ItemContainer = styled.li`
   /* margin: 0.5rem 0;
