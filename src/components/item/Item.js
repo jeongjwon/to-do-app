@@ -39,7 +39,7 @@ const Item = ({
             className="edit"
             onClick={() => {
               onChangeSelectedToDo(task);
-              onInsertToggle();
+              onInsertToggle(task);
             }}
           >
             <HiOutlinePencilAlt />

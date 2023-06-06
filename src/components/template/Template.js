@@ -15,14 +15,27 @@ const Template = ({ children }) => {
   const [tasks, setTasks] = useLocalStorage("tasks", []);
   const [selectedToDo, setSelectedToDo] = useState(null);
   //선택되는 todo
-  const [insertToggle, setInsertToggle] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   // true인 경우 ToDoEdit 팝업창 오픈
+  const [editedTask, setEditedTask] = useState('');
 
   const nextId = useRef(4);
 
-  const onInsert = (task) => {
+  const onInsert = (task) => {//추가
     setTasks((prevState) => [...prevState, task]);
   };
+
+  const onRemove = useCallback((id) => {
+    setTasks((tasks) => tasks.filter((todo) => todo.id !== id));
+  }, []); //todo 중 todo.id가 인자로 받아온 id와 일치하지 않는 원소만 추출하여 새로운 배열을 만듦
+
+  const onUpdate = useCallback((task) => {
+    onInsertToggle(); //팝업창 꺼줌
+
+    setTasks((prevState) =>
+      prevState.map((todo) =>
+            todo.id === task.id ? {...todo, name: task.name} : todo));
+  }, []);
 
   const onToggle = useCallback((id) => {
     setTasks((tasks) =>
@@ -37,25 +50,18 @@ const Template = ({ children }) => {
     );
   });
 
-  const onInsertToggle = useCallback(() => {
+  const onInsertToggle = useCallback((task) => {
     //ToDoListItem 의 수정하기 + ToDoEdit의 수정하기 버튼
+
     if (selectedToDo) {
       //항목이 선택되어 있다면 selectedToDo 를 null로 변경
       setSelectedToDo((selectedToDo) => null);
     }
-    setInsertToggle((prev) => !prev);
+    setEditedTask(task);
+    setIsEditing((prev) => !prev);
   });
 
-  const onRemove = useCallback((id) => {
-    setTasks((tasks) => tasks.filter((todo) => todo.id !== id));
-  }, []); //todo 중 todo.id가 인자로 받아온 id와 일치하지 않는 원소만 추출하여 새로운 배열을 만듦
-
-  const onUpdate = useCallback((id, text) => {
-    onInsertToggle(); //팝업창 꺼줌
-    setTasks(
-      tasks > tasks.map((todo) => (todo.id === id ? { ...todo, text } : todo))
-    );
-  }, []);
+  
 
   const onChangeSelectedToDo = (todo) => {
     setSelectedToDo((selectedToDo) => todo);
@@ -65,11 +71,7 @@ const Template = ({ children }) => {
   return (
     <TemplateContainer>
       <h1>Your Note</h1>
-      {/* <TemplateDate>
-                {date.getFullYear()} . {date.getMonth()} . {date.getDay()}
-            </TemplateDate> */}
-      {/* <TemplateContent>{children}</TemplateContent> */}
-
+     
       <Insert onInsert={onInsert} />
 
       {tasks && (
@@ -82,13 +84,14 @@ const Template = ({ children }) => {
         />
       )}
 
-      {insertToggle && (
+      {isEditing && (
         <Edit
+          editedTask={editedTask}
           onInsert={onInsert}
           selectedTodo={selectedToDo}
           onInsertToggle={onInsertToggle}
           onUpdate={onUpdate}
-          insertToggle={insertToggle}
+          setIsEditing={setIsEditing}
         />
       )}
     </TemplateContainer>

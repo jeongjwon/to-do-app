@@ -1,42 +1,57 @@
 import { useCallback, useEffect, useState } from "react";
-import {EditBackground, EditForm } from './Edit.styled.js';
+import { EditBackground, EditForm } from "./Edit.styled.js";
+import { CheckIcon } from "@heroicons/react/24/solid";
 
-const Edit = ({ onUpdate, selectedToDo })  => {
-    
-    const [value, setValue] = useState('');
-    
-    const onChange = useCallback((e) => {
-        setValue(e.target.value);
-    }, []);
-    
-    const onSubmit = useCallback((e) => {
-        onUpdate(selectedToDo.id, value);
-        setValue('');
-        e.preventDefault();
+const Edit = ({ editedTask, onUpdate, selectedToDo, setIsEditing }) => {
+  const [value, setValue] = useState("");
+
+  const [updatedTaskName, setUpdatedTaskName] = useState(editedTask.name);
+
+  const onChangeInput = useCallback(
+    (e) => {
+      setUpdatedTaskName(e.target.value);
     },
-        [onUpdate, value]
-    );
+    [updatedTaskName]
+  );
 
-    useEffect(() => {
-        if (selectedToDo) {
-            setValue(selectedToDo.text);
-        }
-        
-    }, [selectedToDo]);
-    
-    return (
-        <EditBackground>
-          <EditForm onSubmit={onSubmit}>
-                <h2> 수정하기 </h2>
-                <input
-                    value={value}
-                    onChange={onChange}
-                    placeholder='할일을 수정하세요' />
-                <button type="submit">수정하기</button>
-            </EditForm>
-        </EditBackground>
-    )
-}
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
+      // onUpdate({ selectedToDo.id, value });
+      onUpdate({ ...editedTask, name: updatedTaskName });
+      setUpdatedTaskName("");
+    },
+    [onUpdate, updatedTaskName]
+  );
+
+  useEffect(() => {
+    if (selectedToDo) {
+      setValue(selectedToDo.text);
+    }
+  }, [selectedToDo]);
+
+  return (
+    <EditBackground>
+      <EditForm onSubmit={onSubmit}>
+        <div className="wrapper">
+          <input
+            value={updatedTaskName}
+            onChange={(e) => onChangeInput(e)}
+            placeholder="할일을 수정하세요"
+            required
+          />
+          <label htmlFor="editNote" className="label">
+            Update TODO
+          </label>
+        </div>
+
+        <button type="submit">
+          <CheckIcon strokeWidth={2} height={24} width={24} />
+        </button>
+      </EditForm>
+    </EditBackground>
+  );
+};
 
 export default Edit;
